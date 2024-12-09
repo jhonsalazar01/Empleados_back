@@ -19,7 +19,9 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
     "method-override": "^3.0.0",
-    "mongoose": "^7.0.0"
+    "mongoose": "^7.0.0",
+    "o": "^2.3.2",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
