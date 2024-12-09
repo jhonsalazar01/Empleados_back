@@ -1,0 +1,153 @@
+<div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Editar: <%= customer.firstName %> <%= customer.lastName %></h1>
+  <div class="btn-toolbar mb-2 mb-md 0"></div>
+</div>
+
+<div class="col py-3">
+  <div class="row">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Empleados</a></li>
+          <li class="breadcrumb-item active"><%= customer.firstName %> <%= customer.lastName %></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col text-end fw-lighter">
+      <b>Última Actualización: <%= new Date(customer.updatedAt).toUTCString() %></b>
+    </div>
+  </div>
+</div>
+
+<form action="/edit/<%= customer._id %>?_method=PUT" method="POST">
+
+  <!-- Campo Nombre -->
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="firstName">Nombre</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" value="<%= customer.firstName %>" placeholder="First Name" required>
+      <div class="error-message" id="errorFirstName"></div>
+    </div>
+  </div>
+
+  <!-- Campo Apellido -->
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="lastName">Apellido</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" value="<%= customer.lastName %>" placeholder="Last Name" required>
+      <div class="error-message" id="errorLastName"></div>
+    </div>
+  </div>
+
+  <!-- Campo Salario -->
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="tel">Salario</label>
+      <input type="text" class="form-control" id="tel" name="tel" value="<%= customer.tel %>" placeholder="Salary" required>
+      <div class="error-message" id="errorSalary"></div>
+    </div>
+  </div>
+
+  <!-- Campo Correo Electrónico -->
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="email">Correo Electrónico</label>
+      <input type="text" class="form-control" id="email" name="email" value="<%= customer.email %>" placeholder="Email" required>
+      <div class="error-message" id="errorEmail"></div>
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="details">Detalles del empleado</label>
+    <textarea class="form-control" name="details" id="details" cols="30" rows="12" placeholder="Customer Details"><%= customer.details %></textarea>
+  </div>
+
+  <div class="form-group mb-4">
+    <button type="submit" class="btn btn-primary" id="submitButton" disabled>Actualizar Empleado</button>
+  </div>
+
+</form>
+
+<script>
+ // Función para validar el nombre en tiempo real
+ function validateFirstName() {
+  const firstName = document.getElementById('firstName').value;
+  const nameRegex = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]{4,}$/; // Acepta letras y espacios, con al menos 4 caracteres
+  if (!nameRegex.test(firstName)) {
+    document.getElementById('errorFirstName').innerText = 'El nombre debe tener al menos 4 caracteres (letras y espacios permitidos).';
+  } else {
+    document.getElementById('errorFirstName').innerText = '';
+  }
+  checkFormValidity();
+}
+
+// Función para validar el apellido en tiempo real
+function validateLastName() {
+  const lastName = document.getElementById('lastName').value;
+  const nameRegex = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]{4,}$/; // Acepta letras y espacios, con al menos 4 caracteres
+  if (!nameRegex.test(lastName)) {
+    document.getElementById('errorLastName').innerText = 'El apellido debe tener al menos 4 caracteres (letras y espacios permitidos).';
+  } else {
+    document.getElementById('errorLastName').innerText = '';
+  }
+  checkFormValidity();
+}
+
+
+  // Función para validar el salario en tiempo real
+  function validateSalary() {
+    const salary = document.getElementById('tel').value;
+    const salaryRegex = /^\d{1,7}$/;
+
+    if (salary && !salaryRegex.test(salary)) {
+      document.getElementById('errorSalary').innerText = 'El salario no debe tener más de 7 dígitos.';
+    } else {
+      document.getElementById('errorSalary').innerText = '';
+    }
+    checkFormValidity();
+  }
+
+  // Función para validar el correo electrónico en tiempo real
+  function validateEmail() {
+    const email = document.getElementById('email').value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email && !emailRegex.test(email)) {
+      document.getElementById('errorEmail').innerText = 'Correo Electrónico no válido.';
+    } else {
+      document.getElementById('errorEmail').innerText = '';
+    }
+    checkFormValidity();
+  }
+
+  // Verificación para activar o desactivar el botón
+  function checkFormValidity() {
+    const errors = [
+      document.getElementById('errorFirstName').innerText,
+      document.getElementById('errorLastName').innerText,
+      document.getElementById('errorSalary').innerText,
+      document.getElementById('errorEmail').innerText
+    ];
+
+    const submitButton = document.getElementById('submitButton');
+
+    if (errors.every(error => error === '')) {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+  }
+
+  // Event listeners en tiempo real
+  document.getElementById('firstName').addEventListener('input', validateFirstName);
+  document.getElementById('lastName').addEventListener('input', validateLastName);
+  document.getElementById('tel').addEventListener('input', validateSalary);
+  document.getElementById('email').addEventListener('input', validateEmail);
+</script>
+
+<style>
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+  }
+</style>
